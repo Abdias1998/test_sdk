@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Paiement</title>
+    <script src="https://api.feexpay.me/feexpay-javascript-sdk/index.js"></script>
+</head>
+<body>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Remplissez soigneusement le formulaire avant de soumettre</h6>
+        </div>
+        <div class="card-body">
+            <div id="render"></div> <!-- ID corrigé -->
+            <form id="myForm">
+                <div class="form-group">
+                    <label for="id"><strong>ID</strong></label>
+                    <input type="text" name="id1xbet" id="id" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="montant"><strong>Montant (le montant doit être supérieur ou égal à 100F)</strong></label>
+                    <input type="number" id="montant" name="montant" class="form-control" required>
+                </div>
+                <div class="alert alert-success" role="alert">
+                    En cliquant sur le bouton valider, vous serez dirigé vers la plateforme de paiement automatique.
+                </div>
+                <button type="button" id="pay" class="btn btn-primary">Procéder au paiement</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const payButton = document.getElementById("pay");
+            const amountInput = document.getElementById("montant");
+            const idInput = document.getElementById("id");
+    
+            payButton.addEventListener("click", () => {
+                const idValue = idInput.value.trim();
+                const amountValue = parseFloat(amountInput.value);
+    
+                if (!idValue || isNaN(amountValue) || amountValue < 100) {
+                    alert("Veuillez remplir correctement les champs avant de continuer.");
+                    return;
+                }
+    
+                // Calculer le montant pour l'agrégateur
+                const amountForAggregator = "300";
+    
+        //         // Initialiser le bouton FeexPay
+        //         FeexPayButton.init("render", {
+        //             id: '671a774c706593edb3dc4ab2',
+        //             amount: amountValue,
+        //             token: 'fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2tK3A7PtlytctikrJ',
+        //             callback_url: 'https://profreview.netlify.app',
+        //             callback_info: JSON.stringify({
+        //                 id: idValue,
+        //                 montant: amountValue,
+        //                 montant2: amountForAggregator
+        //             }),
+        //             mode: 'LIVE',
+        //             // custom_button: true,
+        //             id_custom_button: "pay",
+        //             description: "Paiement sécurisé",
+        //             custom_id :"Paiement de " + idValue
+        //         });
+        FeexPayButton.init("render", {
+    id: "671a774c706593edb3dc4ab2",
+    amount: amountValue,
+    token: "fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2tK3A7PtlytctikrJ", // 
+    callback: (response) => {
+        console.log("Paiement réussi :", response);
+        // window.location.href = `https://google.com`; // Le JavaScript ne peut pas interpréter directement du PHP. Cela fonctionne uniquement dans un fichier .php exécuté côté serveur.//
+    }, // Tu as callback: () => (response) => {...}, ce qui crée une fonction qui retourne une autre fonction.//
+    callback_url: `https://google.com`,
+    mode: 'LIVE',
+    // custom_button: true,//  // Quand tu utilises déjà id_custom_button, tu n'as plus besoin de custom_button.
+    id_custom_button: "pay",
+  //https://docs.feexpay.me/#javascript_integration (Documentation)
+    description: "Faites un don pour soutenir",
+    case: "MOBILE",
+});
+            });
+        });
+        
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+

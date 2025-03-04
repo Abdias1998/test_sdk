@@ -1,0 +1,5 @@
+{
+    "require": {
+        "feexpay/feexpay-php": "^1.0"
+    }
+}

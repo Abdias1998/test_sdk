@@ -1,0 +1,59 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "25d114ca65798ee824f618d92f31d741",
+    "packages": [
+        {
+            "name": "feexpay/feexpay-php",
+            "version": "1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/La-Vedette-Media/feexpay-php-sdk.git",
+                "reference": "5cf7399a5a9363777ba83d16ca8bb9a53b8ebda0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/La-Vedette-Media/feexpay-php-sdk/zipball/5cf7399a5a9363777ba83d16ca8bb9a53b8ebda0",
+                "reference": "5cf7399a5a9363777ba83d16ca8bb9a53b8ebda0",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "version": "1.0.12"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Feexpay\\FeexpayPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LOUGBEGNON",
+                    "email": "amedeelougbegnon3@gmail.com"
+                }
+            ],
+            "description": "Php sdk of Feexpay - Online payment solution by credit card and mobile money\"",
+            "support": {
+                "issues": "https://github.com/La-Vedette-Media/feexpay-php-sdk/issues",
+                "source": "https://github.com/La-Vedette-Media/feexpay-php-sdk/tree/1.0.12"
+            },
+            "time": "2024-07-24T15:30:57+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
