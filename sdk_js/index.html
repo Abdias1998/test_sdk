@@ -1,94 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de Paiement</title>
+    <title>Paiement sécurisé - FeexPay</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FeexPay SDK -->
     <script src="https://api.feexpay.me/feexpay-javascript-sdk/index.js"></script>
+
+    <style>
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #112C56;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .payment-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-pay {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+            background-color: #D45D00;
+            color : #fff;
+            border: none;
+        }
+        .alert {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Remplissez soigneusement le formulaire avant de soumettre</h6>
-        </div>
-        <div class="card-body">
-            <div id="render"></div> <!-- ID corrigé -->
-            <form id="myForm">
-                <div class="form-group">
-                    <label for="id"><strong>ID</strong></label>
-                    <input type="text" name="id1xbet" id="id" class="form-control" required>
+
+    <div class="container">
+        <div class="payment-container">
+            <h4 class="text-center mb-4 title">Paiement sécurisé</h4>
+
+            <form id="paymentForm">
+                <div class="mb-3">
+                    <label for="montant" class="form-label"><strong>Montant (min. 90 F)</strong></label>
+                    <input type="number" class="form-control" id="montant" min="90" required>
                 </div>
-                <div class="form-group">
-                    <label for="montant"><strong>Montant (le montant doit être supérieur ou égal à 100F)</strong></label>
-                    <input type="number" id="montant" name="montant" class="form-control" required>
+
+                <div class="alert alert-info text-center">
+                    En cliquant sur "Payer", vous serez redirigé vers la plateforme de paiement sécurisée.
                 </div>
-                <div class="alert alert-success" role="alert">
-                    En cliquant sur le bouton valider, vous serez dirigé vers la plateforme de paiement automatique.
-                </div>
-                <button type="button" id="pay" class="btn btn-primary">Procéder au paiement</button>
+
+                <button type="button" class="btn btn-primary btn-pay" id="pay">Procéder au paiement</button>
             </form>
+
+            <div id="render"></div>
         </div>
     </div>
-    <script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module">
+        import config from './config.js';
+
+        const feexpayId = config.FEEXPAY_ID;
+        const feexpayToken = config.FEEXPAY_TOKEN;
+        const callbackUrl = config.CALLBACK_URL;
+
         document.addEventListener('DOMContentLoaded', () => {
             const payButton = document.getElementById("pay");
             const amountInput = document.getElementById("montant");
-            const idInput = document.getElementById("id");
-    
+
             payButton.addEventListener("click", () => {
-                const idValue = idInput.value.trim();
                 const amountValue = parseFloat(amountInput.value);
-    
-                if (!idValue || isNaN(amountValue) || amountValue < 100) {
-                    alert("Veuillez remplir correctement les champs avant de continuer.");
+
+                if (isNaN(amountValue) || amountValue < 90) {
+                    alert("Veuillez entrer un montant valide d'au moins 90 F.");
                     return;
                 }
-    
-                // Calculer le montant pour l'agrégateur
-                const amountForAggregator = "300";
-    
-        //         // Initialiser le bouton FeexPay
-        //         FeexPayButton.init("render", {
-        //             id: '671a774c706593edb3dc4ab2',
-        //             amount: amountValue,
-        //             token: 'fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2tK3A7PtlytctikrJ',
-        //             callback_url: 'https://profreview.netlify.app',
-        //             callback_info: JSON.stringify({
-        //                 id: idValue,
-        //                 montant: amountValue,
-        //                 montant2: amountForAggregator
-        //             }),
-        //             mode: 'LIVE',
-        //             // custom_button: true,
-        //             id_custom_button: "pay",
-        //             description: "Paiement sécurisé",
-        //             custom_id :"Paiement de " + idValue
-        //         });
-        FeexPayButton.init("render", {
-    id: "671a774c706593edb3dc4ab2",
-    amount: amountValue,
-    token: "fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2tK3A7PtlytctikrJ", // 
-    callback: (response) => {
-        console.log("Paiement réussi :", response);
-        // window.location.href = `https://google.com`; // Le JavaScript ne peut pas interpréter directement du PHP. Cela fonctionne uniquement dans un fichier .php exécuté côté serveur.//
-    }, // Tu as callback: () => (response) => {...}, ce qui crée une fonction qui retourne une autre fonction.//
-    callback_url: `https://google.com`,
-    mode: 'LIVE',
-    // custom_button: true,//  // Quand tu utilises déjà id_custom_button, tu n'as plus besoin de custom_button.
-    id_custom_button: "pay",
-  //https://docs.feexpay.me/#javascript_integration (Documentation)
-    description: "Faites un don pour soutenir",
-    case: "MOBILE",
-});
+
+                // Affiche un message de chargement
+                payButton.innerHTML = "Traitement en cours...";
+                payButton.disabled = true;
+                payButton.style.backgroundColor = "#D45D00";
+
+                // Intégration du bouton de paiement FeexPay
+                FeexPayButton.init("render", {
+                    id: feexpayId,
+                    amount: amountValue,
+                    token: feexpayToken,
+                    callback_url: callbackUrl,
+                    callback_info: JSON.stringify({ montant: amountValue }),
+                    mode: 'LIVE',
+                    id_custom_button: "pay",
+                    // custom_button: true,
+                    description: "Paiement sécurisé - FeexPay",
+                    callback: (response) => {
+                        if (response.status === "SUCCESSFUL") {
+                            console.log("Paiement réussi :", response);
+                        alert("Paiement réussi !");
+                        window.location.href = "https://feexpay.me";
+                        }
+
+                        if (response.status === "FAILED") {
+                            console.error("Erreur lors du paiement :", response.error);
+                            alert("Une erreur est survenue lors du paiement.");
+                            return;
+                        }
+                        
+                   
+
+                        console.log(response);
+                        
+                       
+                    }
+                });
+
+                // Réactiver le bouton après 5 secondes en cas d'échec
+                setTimeout(() => {
+                    payButton.innerHTML = "Procéder au paiement";
+                    payButton.disabled = false;
+               
+                }, 5000);
             });
         });
-        
-    
     </script>
-    
+
 </body>
 </html>
-
-
-
-
