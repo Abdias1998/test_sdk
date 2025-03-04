@@ -4,3 +4,5 @@
     FEEXPAY_TOKEN: "fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2tK3A7PtlytctikrJ",
     CALLBACK_URL: "https://google.com",
   };
+
+  export default config;
