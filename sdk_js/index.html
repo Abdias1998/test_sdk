@@ -38,6 +38,10 @@
             color : #fff;
             border: none;
         }
+        .btn-pay:hover {
+            background-color: #d16818;
+            color : #fff;
+        }
         .alert {
             font-size: 14px;
         }
@@ -98,6 +102,7 @@
                     id: feexpayId,
                     amount: amountValue,
                     token: feexpayToken,
+                    fields_to_hide: ["email", "name"],
                     callback_url: callbackUrl,
                     callback_info: JSON.stringify({ montant: amountValue }),
                     mode: 'LIVE',
