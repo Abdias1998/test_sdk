@@ -7,10 +7,10 @@ use Feexpay\FeexpayPhp\FeexpayClass;
 
 class PaiementController extends Controller
 {
-    public function index()
-    {
-        return view('paiement');
-    }
+    // public function index()
+    // {
+    //     return view('paiement');
+    // }
 
     public function payer()
     {

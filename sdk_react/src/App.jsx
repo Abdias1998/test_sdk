@@ -44,6 +44,8 @@ function App() {
         callback_info="Informations supplémentaires"
         buttonText="Payer"
         buttonClass="mt-3"
+        case="CARD"
+
         // defaultValueField={{ 'country_iban': "BJ", 'network': "MOOV" }}
       />
     <button onClick={handleClick}>

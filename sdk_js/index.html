@@ -87,8 +87,8 @@
             payButton.addEventListener("click", () => {
                 const amountValue = parseFloat(amountInput.value);
 
-                if (isNaN(amountValue) || amountValue < 90) {
-                    alert("Veuillez entrer un montant valide d'au moins 90 F.");
+                if (isNaN(amountValue) || amountValue < 10) {
+                    alert("Veuillez entrer un montant valide d'au moins 10 F.");
                     return;
                 }
 
