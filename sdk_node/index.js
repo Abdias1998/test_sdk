@@ -20,7 +20,7 @@ const feexpay = new Feexpay('fp_HHNoQGt9Vn8KpZoLaBkG3uEeKpLUYBaHUZIZXJE3Xgv0OKG2
         motif,
         network } = req.body;
 
-      const order = await feexpay.payment.createGlob({
+      const order = await feexpay.payment.create({
         amount,
         shop,
         callback_info,

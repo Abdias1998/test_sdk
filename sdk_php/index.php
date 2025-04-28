@@ -95,10 +95,10 @@ $feexpay = new Feexpay\FeexpayPhp\FeexpayClass($id, $token, $callback_url, $mode
 
     <?php
     // Initialisation du paiement
-    $result = $feexpay->init(100, "button_payee", false, "", "Achat de T-shirt", "info_callback");
+    $result = $feexpay->init(10, "button_payee", false, "", "Achat de T-shirt", "info_callback");
     
-    // $response = $feexpay->paiementLocal("100","2290160661600","MOOV","John Doe","adinsiabdias@gmail.com","","");
-    // $status = $feexpay->getPaiementStatus($response);
+    // $response = $feexpay->paiementLocal("10","2290160661600","MOOV","John Doe","adinsiabdias@gmail.com","","");
+    $status = $feexpay->getPaiementStatus($response);
     // var_dump($status);
     // Pour utiliser un bouton personnalisé, décommentez la ligne suivante :
     // $result = $feexpay->init(5000, "button_payee", true, "custom_button", "Achat de T-shirt", "info_callback");

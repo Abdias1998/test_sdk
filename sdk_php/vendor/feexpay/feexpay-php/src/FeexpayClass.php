@@ -287,32 +287,92 @@ class FeexpayClass
 
     }
 
-    public function getPaiementStatus($paiementRef)
-    {
-        try {
-            $curlGetPaiementWithReference = curl_init("https://api.feexpay.me/api/transactions/getrequesttopay/integration/$paiementRef");
-            curl_setopt($curlGetPaiementWithReference, CURLOPT_CAINFO, __DIR__ . DIRECTORY_SEPARATOR . 'certificats/IXRCERT.crt');
-            curl_setopt($curlGetPaiementWithReference, CURLOPT_RETURNTRANSFER, true);
-            $responseCurlStatus = curl_exec($curlGetPaiementWithReference);
-            $statusData = json_decode($responseCurlStatus);
-            curl_close($curlGetPaiementWithReference);
+    // public function getPaiementStatus($paiementRef)
+    // {
+    //     try {
+    //         $curlGetPaiementWithReference = curl_init("https://api.feexpay.me/api/transactions/getrequesttopay/integration/$paiementRef");
+    //         curl_setopt($curlGetPaiementWithReference, CURLOPT_CAINFO, __DIR__ . DIRECTORY_SEPARATOR . 'certificats/IXRCERT.crt');
+    //         curl_setopt($curlGetPaiementWithReference, CURLOPT_RETURNTRANSFER, true);
+    //         $responseCurlStatus = curl_exec($curlGetPaiementWithReference);
+    //         $statusData = json_decode($responseCurlStatus);
+    //         curl_close($curlGetPaiementWithReference);
 
-            //if (isset($statusData->status)) {
-            $payer = $statusData->payer;
-            $responseSendArray = array(
-                "amount"=>$statusData->amount,
-                "clientNum"=>$payer->partyId,
-                "status"=>$statusData->status,
-                "reference"=>$statusData->reference
-            );
-            return $responseSendArray;
-           /*  }
-            else {
-                echo "Réponse inattendue de l'API";
-            } */
+    //         //if (isset($statusData->status)) {
+    //         $payer = $statusData->payer;
+    //         $responseSendArray = array(
+    //             "amount"=>$statusData->amount,
+    //             "clientNum"=>$payer->partyId,
+    //             "status"=>$statusData->status,
+    //             "reference"=>$statusData->reference
+    //         );
+    //         return $responseSendArray;
+    //        /*  }
+    //         else {
+    //             echo "Réponse inattendue de l'API";
+    //         } */
+    //     }
+    //     catch (\Throwable $th) {
+    //         echo "Get Status Request Not Send";
+    //     }
+    // }
+
+    public function getPaiementStatus($paiementRef)
+{
+    try {
+        // Initialisation de la requête cURL
+        $curlGetPaiementWithReference = curl_init("https://api.feexpay.me/api/transactions/getrequesttopay/integration/$paiementRef");
+        curl_setopt($curlGetPaiementWithReference, CURLOPT_CAINFO, __DIR__ . DIRECTORY_SEPARATOR . 'certificats/IXRCERT.crt');
+        curl_setopt($curlGetPaiementWithReference, CURLOPT_RETURNTRANSFER, true);
+        
+        $responseCurlStatus = curl_exec($curlGetPaiementWithReference);
+        
+        // Vérification des erreurs cURL
+        if (curl_errno($curlGetPaiementWithReference)) {
+            throw new \Exception('Erreur cURL : ' . curl_error($curlGetPaiementWithReference));
         }
-        catch (\Throwable $th) {
-            echo "Get Status Request Not Send";
+        
+        curl_close($curlGetPaiementWithReference);
+        
+        // Décodage de la réponse JSON
+        $statusData = json_decode($responseCurlStatus);
+        
+        // Vérification du format de la réponse
+        if (!is_object($statusData)) {
+            throw new \Exception('Format de réponse API invalide');
         }
+        
+        // Vérification des champs obligatoires
+        if (!isset($statusData->status)) {
+            throw new \Exception('La réponse API ne contient pas de statut');
+        }
+        
+        // Construction du tableau de réponse avec vérification des champs
+        $responseSendArray = [
+            "status" => $statusData->status,
+            "reference" => $statusData->reference ?? null,
+        ];
+        
+        // Ajout des champs conditionnels
+        if (isset($statusData->amount)) {
+            $responseSendArray["amount"] = $statusData->amount;
+        }
+        
+        if (isset($statusData->payer) && is_object($statusData->payer) && isset($statusData->payer->partyId)) {
+            $responseSendArray["clientNum"] = $statusData->payer->partyId;
+        }
+        
+        return $responseSendArray;
     }
+    catch (\Throwable $th) {
+        // Journalisation de l'erreur pour le débogage
+        error_log('Erreur dans getPaiementStatus : ' . $th->getMessage());
+        
+        // Retour d'un tableau d'erreur structuré
+        return [
+            "error" => "Échec de la requête de statut",
+            "message" => $th->getMessage(),
+            "success" => false
+        ];
+    }
+}
 }
