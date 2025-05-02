@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Paiement Feexpay</h1>
     <form method="POST" action="">
-        <button type="submit" name="payButton">Payer 100</button>
+        <button type="submit" name="payButton">Payer 10</button>
     </form>
 </body>
 </html>

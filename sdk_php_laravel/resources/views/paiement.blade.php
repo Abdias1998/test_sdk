@@ -68,7 +68,7 @@
         
         <div class="product-info">
             <p><strong>Produit :</strong> T-shirt personnalisé</p>
-            <p><strong>Prix :</strong> 100 XOF</p>
+            <p><strong>Prix :</strong> 10 XOF</p>
         </div>
 
         <!-- Bouton de paiement FeexPay -->

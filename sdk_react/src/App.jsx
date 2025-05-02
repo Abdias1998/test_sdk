@@ -49,7 +49,7 @@ function App() {
         // defaultValueField={{ 'country_iban': "BJ", 'network': "MOOV" }}
       />
     <button onClick={handleClick}>
-        Payer 100
+        Payer 10
       </button>
 
     </div>

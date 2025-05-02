@@ -21,7 +21,7 @@ class PaiementController extends Controller
         $mode = env('FEEXPAY_MODE');
 
         $feexpay = new FeexpayClass($id, $token, $callback_url, $mode, $error_callback_url);
-        $price = 100;
+        $price = 10;
 
         return view('paiement', ['feexpay' => $feexpay, 'price' => $price]);
     }
