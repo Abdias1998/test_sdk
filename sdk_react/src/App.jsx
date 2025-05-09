@@ -4,7 +4,7 @@ import axios, { AxiosHeaders } from 'axios';
 import { useState } from 'react';
 function App() {
 
-  const [email,setEmail] = useState('adinsiabdias@gmail.com');
+  const [email] = useState('adinsiabdias@gmail.com');
  const handleClick = () => {
   axios.post(
     'https://api.feexpay.me/api/transactions/public/requesttopay/mtn',
